@@ -86,6 +86,11 @@ The Superheroes API is a Flask-based application that allows users to manage sup
 - `hero_id`: Foreign key to `Hero`.
 - `power_id`: Foreign key to `Power`.
 
+## Validation
+
+- **Power Description**: Must be at least 20 characters long. Returns an error if invalid.
+- **HeroPower Strength**: Must be one of "Strong", "Weak", or "Average". Returns an error if invalid.
+
 ## Development
 
 - **Run the app**: `python run.py`

@@ -15,4 +15,5 @@ class Power(db.Model):
         }
 
     def validate_description(self):
-        return self.description and len(self.description) >= 20
+        if not self.description or len(self.description) < 20:
+            raise ValueError("Description must be at least 20 characters long.")

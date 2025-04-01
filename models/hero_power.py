@@ -17,4 +17,5 @@ class HeroPower(db.Model):
         }
 
     def validate_strength(self):
-        return self.strength in ['Strong', 'Weak', 'Average']
+        if self.strength not in ['Strong', 'Weak', 'Average']:
+            raise ValueError("Strength must be one of 'Strong', 'Weak', or 'Average'.")

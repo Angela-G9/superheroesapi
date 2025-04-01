@@ -89,12 +89,16 @@ def update_power(id):
         return power
 
     data = request.get_json()
-    if not data or not data.get('description') or len(data['description']) < 20:
-        return jsonify({"errors": ["description must be at least 20 characters"]}), 400
+    if not data or not data.get('description'):
+        return jsonify({"errors": ["Description is required"]}), 400
 
-    power.description = data['description']
-    db.session.commit()
-    return jsonify(power.to_dict())
+    try:
+        power.description = data['description']
+        power.validate_description()  # Use model validation
+        db.session.commit()
+        return jsonify(power.to_dict())
+    except ValueError as e:
+        return jsonify({"errors": [str(e)]}), 400
 
 @hero_routes.route('/powers/<int:id>', methods=['DELETE'])
 def delete_power(id):
@@ -109,13 +113,19 @@ def delete_power(id):
 @hero_routes.route('/hero_powers', methods=['POST'])
 def create_hero_power():
     data = request.get_json()
-    if data.get('strength') not in ['Strong', 'Weak', 'Average']:
-        return jsonify({"errors": ["Invalid strength value"]}), 400
+    if not data.get('hero_id') or not data.get('power_id') or not data.get('strength'):
+        return jsonify({"errors": ["hero_id, power_id, and strength are required"]}), 400
+
     hero_power = HeroPower(
         hero_id=data['hero_id'],
         power_id=data['power_id'],
         strength=data['strength']
     )
-    db.session.add(hero_power)
-    db.session.commit()
-    return jsonify(hero_power.to_dict()), 201
+
+    try:
+        hero_power.validate_strength()  # Use model validation
+        db.session.add(hero_power)
+        db.session.commit()
+        return jsonify(hero_power.to_dict()), 201
+    except ValueError as e:
+        return jsonify({"errors": [str(e)]}), 400
