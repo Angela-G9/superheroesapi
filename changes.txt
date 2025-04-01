@@ -1,0 +1,8 @@
+1. Added CRUD routes for heroes and powers in `routes/hero_routes.py`.
+2. Implemented validation for power descriptions in `models/power.py`.
+3. Added relationships between heroes and powers in `models/hero.py` and `models/hero_power.py`.
+4. Registered the `hero_routes` Blueprint in `app.py`.
+5. Created a `seed.py` script to populate the database with sample data.
+6. Added a `run.py` file to run the application.
+7. Updated `models/__init__.py` to import all models.
+8. Fixed bugs and ensured the application runs successfully with `flask run`.
